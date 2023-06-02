@@ -1,0 +1,1 @@
+# pagado-wordpress-plugin

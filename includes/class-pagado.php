@@ -51,8 +51,8 @@ class Pagado
     {
         $pluginAdmin = new PagadoAdmin($this->pluginName, $this->version);
 
-        $this->loader->addAction('wp_enqueue_scripts', $pluginAdmin, 'enqueueStyles');
-        $this->loader->addAction('wp_enqueue_scripts', $pluginAdmin, 'enqueueScripts');
+        $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueStyles');
+        $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueScripts');
     }
 
     private function definePublicHooks()

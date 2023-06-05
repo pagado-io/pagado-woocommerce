@@ -36,6 +36,7 @@ class Pagado
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-loader.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-i18n.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-pagado-admin.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/templates/class-pagado-admin-ui.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-pagado-public.php';
 
         $this->loader = new PagadoLoader();
@@ -49,10 +50,12 @@ class Pagado
 
     private function defineAdminHooks()
     {
-        $pluginAdmin = new PagadoAdmin($this->pluginName, $this->version);
+        $pluginAdmin = new PagadoAdmin(PagadoAdminUI::class, $this->pluginName, $this->version);
 
         $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueStyles');
         $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueScripts');
+        $this->loader->addAction('admin_init', $pluginAdmin, 'settingsInit');
+        $this->loader->addAction('admin_menu', $pluginAdmin, 'menuPageInit');
     }
 
     private function definePublicHooks()

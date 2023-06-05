@@ -5,8 +5,8 @@
  * @link        #
  * @since       0.1.0
  *
- * @package Pagado
- * @subpackage Pagado/admin
+ * @package     Pagado
+ * @subpackage  Pagado/admin
  */
 
 class PagadoAdmin

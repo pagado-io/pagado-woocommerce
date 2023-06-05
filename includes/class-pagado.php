@@ -12,7 +12,6 @@
 
 class Pagado
 {
-    protected $loader;
     protected $pluginName;
     protected $version;
 
@@ -24,61 +23,65 @@ class Pagado
             $this->version = '0.1.0';
         }
         $this->pluginName = 'pagado';
+    }
 
+    public function init()
+    {
         $this->loadDependencies();
         $this->setlocale();
         $this->defineAdminHooks();
         $this->definePublicHooks();
+        $this->definePaymentGateway();
     }
 
     private function loadDependencies()
     {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-loader.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-i18n.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-pagado-admin.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/templates/class-pagado-admin-ui.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-pagado-public.php';
-
-        $this->loader = new PagadoLoader();
+        require_once plugin_dir_path(dirname(__FILE__)) . 'gateway/class-pagado-payment-gateway-loader.php';
     }
 
     private function setLocale()
     {
         $pluginI18n = new PagadoI18n();
-        $this->loader->addAction('plugins_loaded', $pluginI18n, 'loadPluginTextDomain');
+        add_action('plugins_loaded', array($pluginI18n, 'loadPluginTextDomain'));
     }
 
     private function defineAdminHooks()
     {
         $pluginAdmin = new PagadoAdmin(PagadoAdminUI::class, $this->pluginName, $this->version);
 
-        $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueStyles');
-        $this->loader->addAction('admin_enqueue_scripts', $pluginAdmin, 'enqueueScripts');
-        $this->loader->addAction('admin_init', $pluginAdmin, 'settingsInit');
-        $this->loader->addAction('admin_menu', $pluginAdmin, 'menuPageInit');
+        add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueStyles'));
+        add_action('admin_enqueue_scripts', array($pluginAdmin, 'enqueueScripts'));
+        add_action('admin_init', array($pluginAdmin, 'settingsInit'));
+        add_action('admin_menu', array($pluginAdmin, 'menuPageInit'));
     }
 
     private function definePublicHooks()
     {
         $pluginPublic = new PagadoPublic($this->pluginName, $this->version);
 
-        $this->loader->addAction('wp_enqueue_scripts', $pluginPublic, 'enqueueStyles');
-        $this->loader->addAction('wp_enqueue_scripts', $pluginPublic, 'enqueueScripts');
+        add_action('wp_enqueue_scripts', array($pluginPublic, 'enqueueStyles'));
+        add_action('wp_enqueue_scripts', array($pluginPublic, 'enqueueScripts'));
     }
 
-    public function run()
+    private function definePaymentGateway()
     {
-        $this->loader->run();
+        // TODO: Check if woocommerce is active
+
+        $gatewayHelper = PagadoPaymentGatewayLoader::class;
+
+        add_action('plugins_loaded', array($gatewayHelper, 'loadGateway'));
+        add_filter('woocommerce_payment_gateways', array($gatewayHelper, 'addGateway'));
+
+        // TODO: Display admin notice if woocommerce is not active
     }
 
     public function getPluginName()
     {
         return $this->pluginName;
-    }
-
-    public function getLoader()
-    {
-        return $this->loader;
     }
 
     public function getVersion()

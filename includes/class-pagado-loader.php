@@ -6,8 +6,8 @@
  * @link            #
  * @since           0.1.0
  *
- * @package Pagado
- * @subpackage Pagado/includes
+ * @package         Pagado
+ * @subpackage      Pagado/includes
  */
 
 class PagadoLoader

@@ -6,8 +6,8 @@
  * @link            #
  * @since           0.1.0
  *
- * @package Pagado
- * @subpackage Pagado/public
+ * @package         Pagado
+ * @subpackage      Pagado/public
  */
 
 

@@ -45,4 +45,4 @@ register_deactivation_hook(__FILE__, 'deactivatePagado');
 require plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
 
 $pagado = new Pagado();
-$pagado->run();
+$pagado->init();

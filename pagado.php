@@ -25,24 +25,38 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('PAGADO_VERSION', '0.1.0');
+if (
+    in_array(
+        'woocommerce/woocommerce.php',
+        apply_filters('active_plugins', get_option('active_plugins'))
+    )
+) {
+    define('PAGADO_VERSION', '0.1.0');
 
-function activatePagado()
+    register_activation_hook(__FILE__, 'activate_pagado');
+    register_deactivation_hook(__FILE__, 'deactivate_pagado');
+
+    require plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
+
+    $pagado = new Pagado();
+    $pagado->init();
+} else {
+    add_action('admin_notices', 'no_woocommerce_notice');
+}
+
+function activate_pagado()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-activator.php';
-    PagadoActivator::activate();
+    Pagado_Activator::activate();
 }
 
-function deactivatePagado()
+function deactivate_pagado()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-deactivator.php';
-    PagadoDeactivation::deactivate();
+    Pagado_Deactivation::deactivate();
 }
 
-register_activation_hook(__FILE__, 'activatePagado');
-register_deactivation_hook(__FILE__, 'deactivatePagado');
-
-require plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
-
-$pagado = new Pagado();
-$pagado->init();
+function no_woocommerce_notice()
+{
+    echo '<div class="notice notice-error"><p><strong>WooCommerce is required for Pagado payment gateway. Please install and activate WooCommerce first.</strong></p></div>';
+}

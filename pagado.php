@@ -9,7 +9,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:     Pagado
- * Plugin URI:      https:https://github.com/sajibsrs/pagado-wordpress-plugin
+ * Plugin URI:      https://github.com/sajibsrs/pagado-wordpress-plugin
  * Description:     Pagado payment processor
  * Version:         1.0.0
  * Requires PHP:    7.2

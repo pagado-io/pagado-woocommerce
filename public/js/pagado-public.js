@@ -44,7 +44,6 @@
         const pagadoCheckout = $('#pagado-checkout-wrapper');
 
         if (current === 'pagado') {
-            // console.log(current);
             placeOrderBtn.addClass('pagado-hidden');
             pagadoCheckout.removeClass('pagado-hidden');
         } else {
@@ -61,8 +60,6 @@
      * @returns
      */
     function initializeIframe(data) {
-        // console.log(data);
-
         const iframe = document.getElementById('pagado-checkout-iframe');
 
         if (!iframe) {
@@ -86,11 +83,7 @@
                 if (e.data) {
                     const eventData = JSON.parse(e.data);
 
-                    // console.log(eventData);
-
                     if (eventData.target === 'checkout_button' && eventData.event === 'click') {
-                        // console.log('checkout fired');
-
                         const urlData = {
                             origin: window.origin,
                             redirect: window.location.href,

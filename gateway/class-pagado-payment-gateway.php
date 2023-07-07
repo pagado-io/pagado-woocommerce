@@ -98,7 +98,6 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
             $rspTransactionId = $response->transaction_hash;
             $rspTransactionAmount = $response->amount;
 
-
             if ($rspTransactionId && $rspTransactionAmount) {
                 if (
                     $transactionId == $rspTransactionId &&

@@ -11,21 +11,21 @@
  */
 
 
-class PagadoPublic
+class Pagado_Public
 {
-    private $pluginName;
+    private $plugin_name;
     private $version;
 
-    public function __construct($pluginName, $version)
+    public function __construct($plugin_name, $version)
     {
-        $this->pluginName = $pluginName;
+        $this->plugin_name = $plugin_name;
         $this->version = $version;
     }
 
-    public function enqueueStyles()
+    public function enqueue_styles()
     {
         wp_enqueue_style(
-            $this->pluginName,
+            $this->plugin_name,
             plugin_dir_url(__FILE__) . 'css/pagado-public.css',
             array(),
             $this->version,
@@ -33,14 +33,36 @@ class PagadoPublic
         );
     }
 
-    public function enqueueScripts()
+    public function enqueue_scripts()
     {
         wp_enqueue_script(
-            $this->pluginName,
+            $this->plugin_name,
             plugin_dir_url(__FILE__) . 'js/pagado-public.js',
             array('jquery'),
             $this->version,
             false
         );
+    }
+
+    public function add_after_checkout_button()
+    {
+        echo '<div id="pagado-checkout-wrapper" class="pagado-hidden"><iframe id="pagado-checkout-iframe" src="https://localhost/checkout-buttons" name="pagado_checkout_iframe" height="100%" width="100%" title="Pagado Checkout" style="border:none;"></iframe></div>';
+    }
+
+    public function get_pagado_order_data()
+    {
+        try {
+            $gateway = WC()->payment_gateways->payment_gateways()[$this->plugin_name];
+
+            $data['to'] = $gateway->email;
+            $data['price'] = WC()->cart->subtotal;
+            $data['currency'] = get_woocommerce_currency();
+            $data['version'] = $this->version;
+            $data['variant'] = 'wc';
+
+            wp_send_json_success($data);
+        } catch (Exception $e) {
+            wp_send_json_error($e);
+        }
     }
 }

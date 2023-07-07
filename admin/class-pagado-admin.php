@@ -9,23 +9,37 @@
  * @subpackage  Pagado/admin
  */
 
-class PagadoAdmin
+class Pagado_Admin
 {
-    private $pluginName;
+    private $plugin_name;
     private $version;
-    private $uiClass;
 
-    public function __construct($uiClass, $pluginName, $version)
+    public function __construct($plugin_name, $version)
     {
-        $this->pluginName = $pluginName;
+        $this->plugin_name = $plugin_name;
         $this->version = $version;
-        $this->uiClass = $uiClass;
     }
 
-    public function enqueueStyles()
+    public function add_millix_currency($currencies)
+    {
+        $currencies['MILLIX'] = __('Millix', 'pagado');
+        return $currencies;
+    }
+
+    public function add_millix_currency_symbol($currency_symbol, $currency)
+    {
+        switch ($currency) {
+            case 'MILLIX':
+                $currency_symbol = 'MLX';
+                break;
+        }
+        return $currency_symbol;
+    }
+
+    public function enqueue_styles()
     {
         wp_enqueue_style(
-            $this->pluginName,
+            $this->plugin_name,
             plugin_dir_url(__FILE__) . 'css/pagado-admin.css',
             array(),
             $this->version,
@@ -33,50 +47,14 @@ class PagadoAdmin
         );
     }
 
-    public function enqueueScripts()
+    public function enqueue_scripts()
     {
         wp_enqueue_script(
-            $this->pluginName,
+            $this->plugin_name,
             plugin_dir_url(__FILE__) . 'js/pagado-admin.js',
             array('jquery'),
             $this->version,
             false
-        );
-    }
-
-    public function settingsInit()
-    {
-        register_setting('pagado', 'pagado_options');
-
-        add_settings_section(
-            'pagado_section',
-            __('Section', 'pagado'),
-            array($this->uiClass, 'sectionHTML'),
-            'pagado'
-        );
-
-        add_settings_field(
-            'pagado_field',
-            __('Field', 'pagado'),
-            array($this->uiClass, 'fieldHTML'),
-            'pagado',
-            'pagado_section',
-            array(
-                'label_for' => 'pagado_field',
-                'class' => 'pagado_row',
-                'pagado_custom_data' => 'custom',
-            )
-        );
-    }
-
-    public function menuPageInit()
-    {
-        add_menu_page(
-            __('Pagado', 'pagado'),
-            'Pagado',
-            'manage_options',
-            'pagado',
-            array($this->uiClass, 'optionPageHTML'),
         );
     }
 }

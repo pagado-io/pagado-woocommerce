@@ -10,7 +10,7 @@
  * @subpackage      Pagado/includes
  */
 
-class PagadoDeactivation
+class Pagado_Deactivation
 {
     public static function deactivate()
     {

@@ -10,16 +10,16 @@
  * @subpackage      Pagado/gateway
  */
 
-class PagadoPaymentGatewayLoader
+class Pagado_Payment_Gateway_Loader
 {
-    public static function loadGateway()
+    public static function load_gateway()
     {
         require_once plugin_dir_path(dirname(__FILE__)) . 'gateway/class-pagado-payment-gateway.php';
     }
 
-    public static function addGateway($methods)
+    public static function add_gateway($methods)
     {
-        $methods[] = 'PagadoPaymentGateway';
+        $methods[] = 'Pagado_Payment_Gateway';
         return $methods;
     }
 }

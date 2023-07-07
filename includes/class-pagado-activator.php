@@ -10,7 +10,7 @@
  * @subpackage      Pagado/includes
  */
 
-class PagadoActivator
+class Pagado_Activator
 {
     public static function activate()
     {

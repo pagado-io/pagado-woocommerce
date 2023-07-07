@@ -10,9 +10,9 @@
  * @subpackage      Pagado/includes
  */
 
-class PagadoI18n
+class Pagado_I18n
 {
-    public function loadPluginTextDomain()
+    public function load_plugin_text_domain()
     {
         load_plugin_textdomain(
             'pagado',

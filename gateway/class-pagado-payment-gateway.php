@@ -78,9 +78,9 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
         $transactionId = wc_get_var($_REQUEST['transaction_id']);
 
         if ($transactionId) {
-            $host = 'https://localhost'; // TODO: Update
+            $server = 'https://pagado.io'; // TODO: Update
 
-            $url = $host . '/api/pagado/transaction/' . $transactionId;
+            $url = $server . '/api/pagado/transaction/' . $transactionId;
             $cookies = array();
 
             foreach ($_COOKIE as $name => $value) {

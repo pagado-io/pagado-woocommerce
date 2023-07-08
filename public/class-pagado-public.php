@@ -46,7 +46,9 @@ class Pagado_Public
 
     public function add_after_checkout_button()
     {
-        echo '<div id="pagado-checkout-wrapper" class="pagado-hidden"><iframe id="pagado-checkout-iframe" src="https://localhost/checkout-buttons" name="pagado_checkout_iframe" height="100%" width="100%" title="Pagado Checkout" style="border:none;"></iframe></div>';
+        $server = 'https://pagado.io';
+
+        echo '<div id="pagado-checkout-wrapper" class="pagado-hidden"><iframe id="pagado-checkout-iframe" src="'. $server .'/checkout-buttons" name="pagado_checkout_iframe" height="100%" width="100%" title="Pagado Checkout" style="border:none;"></iframe></div>';
     }
 
     public function get_pagado_order_data()

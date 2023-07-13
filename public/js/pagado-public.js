@@ -114,17 +114,22 @@
                     }
 
                     if (eventData.target === 'checkout_window' && eventData.event === 'checkout') {
+                        const checkoutForm = $('form.checkout');
+                        const transactionIdHiddenField = checkoutForm.find('#transaction_id');
+
+                        if (transactionIdHiddenField.length) {
+                            transactionIdHiddenField.remove();
+                        }
+
                         if (checkoutWindow && !checkoutWindow.closed) {
                             checkoutWindow.close();
-                            const checkoutForm = $('form.checkout');
-                            const transactionIdHiddenField = checkoutForm.find('#transaction_id');
 
                             if (!transactionIdHiddenField.length) {
 
                                 checkoutForm.append(`<input type='hidden' id='transaction_id' name='transaction_id' value=${eventData.id} type='hidden'>`);
                             }
 
-                            $('form.checkout').submit();
+                            $('#place_order').click();
                         }
                     }
                 }

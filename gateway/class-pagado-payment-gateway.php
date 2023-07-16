@@ -75,19 +75,34 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
     public function process_payment($order_id)
     {
         $order = new WC_Order($order_id);
-        $transactionId = wc_get_var($_REQUEST['transaction_id']);
 
-        if ($transactionId) {
+        $data = wc_get_var($_REQUEST['pagado_data']);
+        $data = json_decode(html_entity_decode(stripslashes($data)));
+
+        $currency = $order->get_currency();
+
+        if ($currency !== 'MILLIX') {
+            wc_add_notice(__('Pagado only supports Millix. Invalid currency: ', 'pagado') . $currency, 'error');
+            return;
+        }
+
+        if ($data->token) {
             $server = 'https://pagado.io'; // TODO: Update
+            $url = $server . '/api/pagado/confirm-checkout';
 
-            $url = $server . '/api/pagado/transaction/' . $transactionId;
             $cookies = array();
+            $cookies[] = new WP_Http_Cookie(array('name' => 'AuthToken', 'value' => $data->token));
 
             foreach ($_COOKIE as $name => $value) {
                 $cookies[] = new WP_Http_Cookie(array('name' => $name, 'value' => $value));
             }
 
-            $request = wp_remote_get($url, array(
+            $request = wp_remote_post($url, array(
+                'body' => array(
+                    'to' => $data->order->to,
+                    'price' => $data->order->price,
+                    'order_id' => $order->get_id(),
+                ),
                 'cookies' => $cookies,
                 'sslverify' => false, // TODO: enable (optional)
             ));
@@ -95,29 +110,21 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
             $response = wp_remote_retrieve_body($request);
             $response = json_decode($response);
 
-            $rspTransactionId = $response->transaction_hash;
-            $rspTransactionAmount = $response->amount;
+            if ($response->success == true && $response->price == $order->get_subtotal()) {
+                $order->update_status('completed', __('Payment complete.', 'pagado'));
+                $order->add_order_note("Transaction ID: " . $response->id, 1);
 
-            if ($rspTransactionId && $rspTransactionAmount) {
-                if (
-                    $transactionId == $rspTransactionId &&
-                    $order->get_subtotal() == $rspTransactionAmount
-                ) {
-                    $order->update_status('completed', __('Payment complete.', 'pagado'));
-                    wc_reduce_stock_levels($order);
-                    WC()->cart->empty_cart();
+                wc_reduce_stock_levels($order);
+                WC()->cart->empty_cart();
 
-                    return array(
-                        'result' => 'success',
-                        'redirect' => $this->get_return_url($order),
-                    );
-                }
+                return array(
+                    'result' => 'success',
+                    'redirect' => $this->get_return_url($order),
+                );
             }
 
-            return array(
-                'result' => 'failure',
-                'message' => 'Payment failed',
-            );
+            wc_add_notice(__('Payment error.', 'pagado'), 'error');
+            return;
         }
     }
 }

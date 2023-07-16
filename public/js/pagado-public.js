@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var server = 'https://pagado.io';
+    var server = 'https://localhost';
 
     $(document).ready(function () {
         $('body').on('updated_checkout', function () {
@@ -71,7 +71,7 @@
         iframe.addEventListener('load', handleLoad, true);
 
         function handleLoad() {
-            iframeWindow.postMessage('hi', server);
+            iframeWindow.postMessage('loaded', server);
         }
 
         let checkoutWindow;
@@ -115,19 +115,17 @@
 
                     if (eventData.target === 'checkout_window' && eventData.event === 'checkout') {
                         const checkoutForm = $('form.checkout');
-                        const transactionIdHiddenField = checkoutForm.find('#transaction_id');
+                        const transactionIdHiddenField = checkoutForm.find('#pagado_data');
 
                         if (transactionIdHiddenField.length) {
                             transactionIdHiddenField.remove();
                         }
 
+
                         if (checkoutWindow && !checkoutWindow.closed) {
                             checkoutWindow.close();
 
-                            if (!transactionIdHiddenField.length) {
-
-                                checkoutForm.append(`<input type='hidden' id='transaction_id' name='transaction_id' value=${eventData.id} type='hidden'>`);
-                            }
+                            checkoutForm.append(`<input type='hidden' id='pagado_data' name='pagado_data' value=${JSON.stringify(eventData)}>`);
 
                             $('#place_order').click();
                         }

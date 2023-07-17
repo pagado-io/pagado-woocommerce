@@ -32,6 +32,7 @@ if (
     )
 ) {
     define('PAGADO_VERSION', '1.2.0');
+    define('PAGADO_ROOT', plugin_dir_path(__FILE__));
 
     register_activation_hook(__FILE__, 'activate_pagado');
     register_deactivation_hook(__FILE__, 'deactivate_pagado');

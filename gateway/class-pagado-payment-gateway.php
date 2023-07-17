@@ -1,5 +1,7 @@
 <?php
 
+use WpOrg\Requests\Response;
+
 /**
  * Pagado payment gateway class
  *
@@ -91,7 +93,6 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
             $url = $server . '/api/pagado/confirm-checkout';
 
             $nonce = substr(str_shuffle(md5(microtime())), 0, 12);
-            // wc_add_order_item_meta($order_id, 'pg_nonce', $nonce);
 
             $cookies = array();
             $cookies[] = new WP_Http_Cookie(array('name' => 'AuthToken', 'value' => $data->token));

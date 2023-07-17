@@ -110,6 +110,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 ),
                 'cookies' => $cookies,
                 'sslverify' => true, // enable
+                'sslcertificates' => PAGADO_ROOT . 'cert.pem',
             ));
 
             $response = wp_remote_retrieve_body($request);

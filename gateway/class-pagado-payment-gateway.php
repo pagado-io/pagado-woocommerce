@@ -87,8 +87,11 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
         }
 
         if ($data->token) {
-            $server = 'https://pagado.io'; // TODO: Update
+            $server = 'https://pagado.io'; // change
             $url = $server . '/api/pagado/confirm-checkout';
+
+            $nonce = substr(str_shuffle(md5(microtime())), 0, 12);
+            // wc_add_order_item_meta($order_id, 'pg_nonce', $nonce);
 
             $cookies = array();
             $cookies[] = new WP_Http_Cookie(array('name' => 'AuthToken', 'value' => $data->token));
@@ -102,15 +105,20 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                     'to' => $data->order->to,
                     'price' => $data->order->price,
                     'order_id' => $order->get_id(),
+                    'pg_nonce' => $nonce,
                 ),
                 'cookies' => $cookies,
-                'sslverify' => false, // TODO: enable (optional)
+                'sslverify' => true, // enable
             ));
 
             $response = wp_remote_retrieve_body($request);
             $response = json_decode($response);
 
-            if ($response->success == true && $response->price == $order->get_subtotal()) {
+            if (
+                $response->success == true &&
+                $response->price == $order->get_subtotal() &&
+                $response->pg_nonce == $nonce
+            ) {
                 $order->update_status('completed', __('Payment complete.', 'pagado'));
                 $order->add_order_note("Transaction ID: " . $response->id, 1);
 
@@ -123,7 +131,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 );
             }
 
-            wc_add_notice(__('Payment error.', 'pagado'), 'error');
+            wc_add_notice(__('Error while processing payment.', 'pagado'), 'error');
             return;
         }
     }

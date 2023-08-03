@@ -11,7 +11,7 @@
  * Plugin Name:     Pagado
  * Plugin URI:      https://github.com/sajibsrs/pagado-wordpress-plugin
  * Description:     Pagado payment processor
- * Version:         1.2.1
+ * Version:         1.2.2
  * Requires PHP:    7.2
  * Author:          Sajidur Rahman
  * Author URI:      #
@@ -31,7 +31,7 @@ if (
         apply_filters('active_plugins', get_option('active_plugins'))
     )
 ) {
-    define('PAGADO_VERSION', '1.2.1');
+    define('PAGADO_VERSION', '1.2.2');
     define('PAGADO_ROOT', plugin_dir_path(__FILE__));
 
     register_activation_hook(__FILE__, 'activate_pagado');

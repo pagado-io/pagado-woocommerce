@@ -10,7 +10,6 @@
  * @subpackage      Pagado/public
  */
 
-
 class Pagado_Public
 {
     private $plugin_name;
@@ -48,7 +47,7 @@ class Pagado_Public
     {
         $server = 'https://pagado.io';
 
-        echo '<div id="pagado-checkout-wrapper" class="pagado-hidden"><iframe id="pagado-checkout-iframe" src="'. $server .'/checkout-buttons" name="pagado_checkout_iframe" height="100%" width="100%" title="Pagado Checkout" style="border:none;"></iframe></div>';
+        echo '<div id="pagado-checkout-wrapper" class="pagado-hidden"><iframe id="pagado-checkout-iframe" src="' . $server . '/checkout-buttons" name="pagado_checkout_iframe" height="100%" width="100%" title="Pagado Checkout" style="border:none;"></iframe></div>';
     }
 
     public function get_pagado_order_data()

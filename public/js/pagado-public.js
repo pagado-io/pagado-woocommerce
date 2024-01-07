@@ -65,15 +65,12 @@
         if (!iframe) {
             return;
         }
-
         const iframeWindow = iframe.contentWindow;
-
         iframe.addEventListener('load', handleLoad, true);
 
         function handleLoad() {
             iframeWindow.postMessage('loaded', server);
         }
-
         let checkoutWindow;
 
         $(window).on('message', function (e) {

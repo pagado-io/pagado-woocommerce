@@ -62,7 +62,6 @@ final class Pagado
     {
         add_action('admin_enqueue_scripts', array($this->plugin_admin, 'enqueue_styles'));
         add_action('admin_enqueue_scripts', array($this->plugin_admin, 'enqueue_scripts'));
-
         add_filter('woocommerce_currencies', array($this->plugin_admin, 'add_millix_currency'));
         add_filter('woocommerce_currency_symbol', array($this->plugin_admin, 'add_millix_currency_symbol'), 10, 2);
     }
@@ -71,9 +70,7 @@ final class Pagado
     {
         add_action('wp_enqueue_scripts', array($this->plugin_public, 'enqueue_styles'));
         add_action('wp_enqueue_scripts', array($this->plugin_public, 'enqueue_scripts'));
-
         add_action('wc_ajax_get_pagado_data', array($this->plugin_public, 'get_pagado_order_data'));
-
         add_action('woocommerce_review_order_after_submit', array($this->plugin_public, 'add_after_checkout_button'), 30);
     }
 

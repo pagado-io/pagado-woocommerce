@@ -20,7 +20,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
     {
         $this->id = 'pagado';
         $this->icon = '';
-        $this->method_title = 'Pagado';
+        $this->method_title = 'Pagado Gateway';
         $this->method_description = __('Pagado payment gateway for WooCommerce', 'pagado');
         $this->supports = array('products');
         $this->init_form_fields();
@@ -72,6 +72,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
 
     public function payment_fields()
     {
+        echo $this->description;
     }
 
     public function process_payment($order_id)

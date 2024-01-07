@@ -121,7 +121,6 @@
                             transactionIdHiddenField.remove();
                         }
 
-
                         if (checkoutWindow && !checkoutWindow.closed) {
                             checkoutWindow.close();
 

@@ -16,16 +16,16 @@ Please check PHP and WordPress versions compatibility [here](https://make.wordpr
 1. Go to WooCommerce -> Settings -> General tab
 2. From Currency options -> Currency, select **Millix (MLX)**.
 3. Use **Save changes** button to save the configuration.
-![Select millix as currency](./doc-img/select-currency-millix.jpg)
+![Select millix as currency](./doc-img/select-currency.png)
 
-4. From WooCommerce -> Settings -> Payment tab, you should see **Pagado Gateway** is activated by default. If not make sure it's activated.
-5. Click on **Manage** button.
-![Manage pagado](./doc-img/manage-pagado.jpg)
+1. From WooCommerce -> Settings -> Payment tab, you should see **Pagado Gateway** is activated by default. If not make sure it's activated.
+2. Click on **Manage** button.
+![Manage pagado](./doc-img/manage-pagado.png)
 
 1. Check **Enable Pagado Payment Gateway**.
 2. Insert your pagado email and password into the respective fields.
 3. Use **Save changes** button to save the configuration.
-![Pagado details](./doc-img/pagado-access-details.jpg)
+![Pagado details](./doc-img/pagado-login.png)
 
 ## # Trouble shooting
 ### # Pagado payment option is not available
@@ -38,15 +38,17 @@ To get **Pagado Payment method** working, you have to switch to **Classic Editor
 1. Login to your WordPress site as admin.
 2. Edit your checkout page by going to pages -> checkout or simply vising checkout page and click on the **Edit** from the top right on the screen.
 3. When in the edit checkout page click any content from the left side.
-![Checkout blocks](./doc-img/checkout-blocks.png)
+![Checkout blocks](./doc-img/checkout-block.png)
 
-4. You'll see a **Pagado Gateway** warning.
-5. Click on the **Switch to classic checkout** button.
-![Block not supported](./doc-img/block-not-supported.png)
+1. You'll see a **Pagado Gateway** warning.
+2. Click on the **Switch to classic checkout** button.
+![Block not supported](./doc-img/block-warning.png)
 
-6. You should see a warning. Click on **Switch**.
-7. Finally **Update** the page.
+1. You should see a warning. Click on **Switch**.
+2. Finally **Update** the page.
 
 *Note: You can simply switch to classic editor as well.*
 
-Now you should be able to see **Pagado** as a payment option.
+Now you should be able to see **Pagado** as a payment option on the checkout page.
+
+![Block not supported](./doc-img/pagado-payment-method.png)

@@ -11,7 +11,7 @@
  * Plugin Name:     Pagado
  * Plugin URI:      https://pagado.io
  * Description:     Pagado payment processor for WooCommerce.
- * Version:         1.2.4
+ * Version:         1.3.0
  * Requires PHP:    7.2
  * Author:          Pagado
  * Author URI:      https://pagado.io
@@ -26,18 +26,32 @@ if (!defined('WPINC')) {
 }
 
 if (is_plugin_active('woocommerce/woocommerce.php')) {
-    define('PAGADO_VERSION', '1.2.4');
+    // Define constants
+    define('PAGADO_VERSION', '1.3.0');
     define('PAGADO_ROOT', plugin_dir_path(__FILE__));
+    define('PAGADO_ROOT_URL', plugin_dir_url(__FILE__));
 
+    // Register activation and deactivation hooks
     register_activation_hook(__FILE__, 'activate_pagado');
     register_deactivation_hook(__FILE__, 'deactivate_pagado');
 
-    require plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
+    // Initialize Pagado features
+    pagado_init();
 
-    $pagado = new Pagado();
-    $pagado->init();
+    // Activate Dokan support if it's active
+    if (is_plugin_active('dokan-lite/dokan.php') || is_plugin_active('dokan-pro/dokan.php')) {
+        require_once plugin_dir_path(__FILE__) . 'dokan/pagado-dokan-payment-method.php';
+    }
 } else {
+    // Display admin notice if WooCommerce is not activated
     add_action('admin_notices', 'no_woocommerce_notice');
+}
+
+function pagado_init()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
+    $pagado = new Pagado();
+    add_action('plugin_loaded', array($pagado, 'init'));
 }
 
 function activate_pagado()

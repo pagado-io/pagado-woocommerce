@@ -61,12 +61,6 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 'description' => __('Provide your pagado email.', 'pagado'),
                 'desc_tip' => true,
             ),
-            'password' => array(
-                'title' => __('Pagado password', 'pagado'),
-                'type' => 'password',
-                'description' => __('Provide your pagado password.', 'pagado'),
-                'desc_tip' => true,
-            ),
         );
     }
 

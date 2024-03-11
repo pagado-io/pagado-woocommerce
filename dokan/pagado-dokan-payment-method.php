@@ -169,7 +169,7 @@ function dokan_withdraw_on_approve($response, $withdraw, $request)
                 return $response;
             }
 
-            $server = 'https://pagado'; // change for dev env
+            $server = 'https://pagado.io'; // change for dev env
             $url = $server . '/api/direct/millix-send';
 
             $request = wp_remote_post($url, array(

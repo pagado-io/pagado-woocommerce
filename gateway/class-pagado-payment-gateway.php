@@ -14,7 +14,8 @@ use WpOrg\Requests\Response;
 
 class Pagado_Payment_Gateway extends WC_Payment_Gateway
 {
-    public $email = '';
+    public $email = null;
+    public $api_key = null;
 
     public function __construct()
     {
@@ -28,6 +29,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
         $this->email = $this->get_option('email');
+        $this->api_key = $this->get_option('api_key');
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
     }
@@ -61,6 +63,12 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 'description' => __('Provide your pagado email.', 'pagado'),
                 'desc_tip' => true,
             ),
+            'api_key' => array(
+                'title' => __('API Direct key', 'pagado'),
+                'type' => 'text',
+                'description' => __('Provide your Pagado API Direct key.', 'pagado'),
+                'desc_tip' => true,
+            ),
         );
     }
 
@@ -86,9 +94,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
         if ($data->token) {
             $server = 'https://pagado.io'; // change
             $url = $server . '/api/pagado/confirm-checkout';
-
             $nonce = substr(str_shuffle(md5(microtime())), 0, 12);
-
             $cookies = array();
             $cookies[] = new WP_Http_Cookie(array('name' => 'AuthToken', 'value' => $data->token));
 

@@ -10,6 +10,8 @@
  * @subpackage      Pagado/dokan
  */
 
+use WeDevs\Dokan\Withdraw\Withdraw;
+
 if (!defined('WPINC')) {
     die;
 }
@@ -142,64 +144,82 @@ function add_pagado_gateway_icon($method_icon, $method_key)
 add_filter('dokan_withdraw_method_icon', 'add_pagado_gateway_icon', 10, 2);
 
 /**
- * Hook for dokan withdraw approval action
- * @since 2.0.0
+ * On order complete create new withdraw request.
+ * @param int $order_id Order ID.
+ * @param string $from Old order status.
+ * @param string $to New order status.
+ * @param WC_Order $order Order object.
+ * @since 2.1.0
  */
-function dokan_withdraw_on_approve($response, $withdraw, $request)
+function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
 {
-    $method = $withdraw->get_method();
-    $status = $withdraw->get_status();
-    $details = unserialize($withdraw->get_details());
-    $body_params = $request->get_body_params();
+    if ($to === "completed") {
+        $pagado_id = "pagado";
+        $vendor_ids = dokan_get_sellers_by($order);
 
-    if (
-        $method == 'pagado' &&
-        $status == 1 && // status 1 accepted
-        !empty($body_params) &&
-        array_key_exists("status", $body_params)
-    ) {
-        if ($body_params["status"] == "approved") {
-            $pagado_gateway = WC()->payment_gateways()->get_available_payment_gateways()['pagado'];
-            $pagado_settings = $pagado_gateway->settings;
+        foreach ($vendor_ids as $vendor_id => $items) {
+            $active_method = dokan_withdraw_get_default_method($vendor_id);
 
-            if (!$pagado_settings["api_key"]) {
-                $withdraw->set_note("Failed! API Direct key missing.");
-                $withdraw->save();
+            if ($active_method === $pagado_id) {
+                $sub_total = 0;
+                $order_details = dokan_get_vendor_order_details($order, $vendor_id);
+                $vendor_details = dokan()->vendor->get($vendor_id);
+                $vendor_details = $vendor_details->to_array();
+                $vendor_email = $vendor_details["payment"][$pagado_id]["email"];
 
-                return $response;
+                foreach ($order_details as $details) {
+                    $sub_total += $details["total"];
+                }
+
+                $pagado_gateway = WC()->payment_gateways()->get_available_payment_gateways()['pagado'];
+                $pagado_settings = $pagado_gateway->settings;
+
+                if (!$pagado_settings["api_key"]) {
+                    return;
+                }
+
+                $withdraw = new Withdraw();
+                $withdraw
+                    ->set_user_id($vendor_id)
+                    ->set_amount($sub_total)
+                    ->set_date(dokan_current_datetime()->format('Y-m-d H:i:s'))
+                    ->set_status(dokan()->withdraw->get_status_code('pending'))
+                    ->set_method($pagado_id)
+                    ->set_ip(dokan_get_client_ip());
+
+                $current_withdraw = $withdraw->save();
+
+                $server = 'https://pagado.io'; // change for dev env
+                $url = $server . '/api/direct/millix-send';
+
+                $request = wp_remote_post($url, array(
+                    'body' => array(
+                        'api_key' => $pagado_settings["api_key"],
+                        'to' => $vendor_email,
+                        'amount' => $current_withdraw->get_receivable_amount(),
+                        'pg_nonce' => '',
+                    ),
+                    'sslverify' => true, // enable
+                ));
+
+                $response = wp_remote_retrieve_body($request);
+                $response = json_decode($response);
+
+                if ($response->status == "success") {
+                    $current_withdraw->set_note("Success! Transaction ID: {$response->content}");
+                    $current_withdraw->set_status(dokan()->withdraw->get_status_code('approved'));
+                    // Action to execute when Pagado payment is successful
+                    do_action('pagado_dokan_on_admin_withdraw_success', $response->content, $withdraw);
+                } else {
+                    $current_withdraw->set_note("{$response->message}");
+                    $current_withdraw->set_status(dokan()->withdraw->get_status_code('cancelled'));
+                    // Action to execute when Pagado payment failed
+                    do_action('pagado_dokan_on_admin_withdraw_fail', $response->message, $withdraw,);
+                }
+
+                $current_withdraw->save();
             }
-
-            $server = 'https://pagado.io'; // change for dev env
-            $url = $server . '/api/direct/millix-send';
-
-            $request = wp_remote_post($url, array(
-                'body' => array(
-                    'api_key' => $pagado_settings["api_key"],
-                    'to' => $details["email"],
-                    'amount' => $details["receivable"],
-                    'pg_nonce' => '',
-                ),
-                'sslverify' => true, // enable
-            ));
-
-            $response = wp_remote_retrieve_body($request);
-            $response = json_decode($response);
-
-            if ($response->status == "success") {
-                $withdraw->set_note("Success! Transaction ID: {$response->content}");
-
-                // Action to execute when Pagado payment is successful
-                do_action('pagado_dokan_on_admin_withdraw_success', $response, $withdraw, $request);
-            } else {
-                $withdraw->set_note("{$response->message}");
-
-                // Action to execute when Pagado payment failed
-                do_action('pagado_dokan_on_admin_withdraw_fail', $response, $withdraw, $request);
-            }
-            $withdraw->save();
         }
     }
-
-    return $response;
 }
-add_filter('dokan_rest_prepare_withdraw_object', 'dokan_withdraw_on_approve', 10, 3);
+add_action('woocommerce_order_status_changed', 'dokan_create_new_withdraw_request', 20, 4);

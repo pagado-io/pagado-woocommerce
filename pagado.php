@@ -3,22 +3,23 @@
 /**
  * Main plugin file
  *
- * @link            #
- * @since           0.1.0
- * @package         Pagado
+ * @link                #
+ * @since               0.1.0
+ * @package             Pagado
  *
  * @wordpress-plugin
- * Plugin Name:     Pagado
- * Plugin URI:      https://pagado.io
- * Description:     Pagado payment processor for WooCommerce.
- * Version:         2.1.0
- * Requires PHP:    7.2
- * Author:          Pagado
- * Author URI:      https://pagado.io
- * License:         GPL-2.0+
- * License URI:     http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:     pagado
- * Domain Path:     /languages
+ * Plugin Name:         Pagado
+ * Plugin URI:          https://pagado.io
+ * Description:         Pagado payment processor for WooCommerce.
+ * Version:             2.1.1
+ * Requires at least:   6.3
+ * Requires PHP:        7.4
+ * Author:              Pagado
+ * Author URI:          https://pagado.io
+ * License:             GPL-2.0+
+ * License URI:         http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:         pagado
+ * Domain Path:         /languages
  */
 
 if (!defined('WPINC')) {

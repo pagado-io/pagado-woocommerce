@@ -209,12 +209,12 @@ function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
                     $current_withdraw->set_note("Success! Transaction ID: {$response->content}");
                     $current_withdraw->set_status(dokan()->withdraw->get_status_code('approved'));
                     // Action to execute when Pagado payment is successful
-                    do_action('pagado_dokan_on_admin_withdraw_success', $response->content, $withdraw);
+                    do_action('pagado_dokan_withdraw_payment_success', $response->content, $withdraw);
                 } else {
                     $current_withdraw->set_note("{$response->message}");
                     $current_withdraw->set_status(dokan()->withdraw->get_status_code('cancelled'));
                     // Action to execute when Pagado payment failed
-                    do_action('pagado_dokan_on_admin_withdraw_fail', $response->message, $withdraw,);
+                    do_action('pagado_dokan_withdraw_payment_fail', $response->message, $withdraw,);
                 }
 
                 $current_withdraw->save();

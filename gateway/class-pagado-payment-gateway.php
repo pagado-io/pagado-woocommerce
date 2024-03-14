@@ -122,10 +122,10 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 $response->price == $order->get_subtotal() &&
                 $response->pg_nonce == $nonce
             ) {
-                $order->update_status('completed', __('Payment complete.', 'pagado'));
-                $order->add_order_note("Transaction ID: " . $response->id, 1);
-
                 wc_reduce_stock_levels($order);
+                $order->update_status('completed', __('Payment complete.', 'pagado'));
+                $order->set_transaction_id($response->id);
+                $order->add_order_note("Transaction ID: " . $response->id, 1);
                 WC()->cart->empty_cart();
 
                 return array(

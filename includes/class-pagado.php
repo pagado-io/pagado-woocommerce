@@ -18,7 +18,6 @@ final class Pagado
     private $plugin_admin;
     private $plugin_public;
     private $plugin_i18n;
-    private $gateway_loader;
 
     function __construct()
     {
@@ -50,7 +49,6 @@ final class Pagado
         $this->plugin_admin = new Pagado_Admin($this->plugin_name, $this->version);
         $this->plugin_public = new Pagado_Public($this->plugin_name, $this->version);
         $this->plugin_i18n = new Pagado_I18n();
-        $this->gateway_loader = Pagado_Payment_Gateway_Loader::class;
     }
 
     private function set_locale()
@@ -76,8 +74,8 @@ final class Pagado
 
     private function define_payment_gateway()
     {
-        add_action('plugins_loaded', array($this->gateway_loader, 'load_gateway'));
-        add_filter('woocommerce_payment_gateways', array($this->gateway_loader, 'add_gateway'));
+        add_action('plugin_loaded', array(Pagado_Payment_Gateway_Loader::class, 'load_gateway'));
+        add_filter('woocommerce_payment_gateways', array(Pagado_Payment_Gateway_Loader::class, 'add_gateway'));
     }
 
     public function get_plugin_name()

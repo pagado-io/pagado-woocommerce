@@ -155,9 +155,9 @@ function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
 {
     if ($to === "completed") {
         $pagado_id = "pagado";
-        $vendor_ids = dokan_get_sellers_by($order);
+        $vendors = dokan_get_sellers_by($order);
 
-        foreach ($vendor_ids as $vendor_id => $items) {
+        foreach ($vendors as $vendor_id => $items) {
             $active_method = dokan_withdraw_get_default_method($vendor_id);
 
             if ($active_method === $pagado_id) {
@@ -171,11 +171,11 @@ function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
                     $sub_total += $details["total"];
                 }
 
-                $pagado_gateway = WC()->payment_gateways()->get_available_payment_gateways()['pagado'];
+                $pagado_gateway = WC()->payment_gateways()->get_available_payment_gateways()[$pagado_id];
                 $pagado_settings = $pagado_gateway->settings;
 
                 if (!$pagado_settings["api_key"]) {
-                    return;
+                    return new WP_Error('invalid_api_key', "Invalid Pagado API Direct key", "pagado");
                 }
 
                 $withdraw = new Withdraw();
@@ -201,6 +201,11 @@ function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
                     ),
                     'sslverify' => true, // enable
                 ));
+
+                if (is_wp_error($request)) {
+                    $err_msg = $request->get_error_message();
+                    throw new Exception($err_msg);
+                }
 
                 $response = wp_remote_retrieve_body($request);
                 $response = json_decode($response);

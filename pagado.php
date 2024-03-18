@@ -63,7 +63,7 @@ function activate_pagado()
 
 function deactivate_pagado()
 {
-    require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-deactivator.php';
+    require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-activator.php';
     Pagado_Activator::deactivate();
 }
 

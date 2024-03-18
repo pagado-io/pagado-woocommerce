@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file defines core plugin class
+ * This file defines core plugin class.
  *
  * @link            #
  * @since           0.1.0
@@ -26,29 +26,30 @@ final class Pagado
         } else {
             $this->version = '0.1.0';
         }
+
         $this->plugin_name = 'pagado';
-    }
 
-
-    public function init()
-    {
-        $this->load_dependencies();
-        $this->set_locale();
-        $this->define_admin_hooks();
-        $this->define_public_hooks();
-        $this->define_payment_gateway();
-    }
-
-    private function load_dependencies()
-    {
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-i18n.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-pagado-block-support.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-pagado-admin.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-pagado-public.php';
         require_once plugin_dir_path(dirname(__FILE__)) . 'gateway/class-pagado-payment-gateway-loader.php';
 
         $this->plugin_admin = new Pagado_Admin($this->plugin_name, $this->version);
         $this->plugin_public = new Pagado_Public($this->plugin_name, $this->version);
-        $this->plugin_i18n = new Pagado_I18n();
+        $this->plugin_i18n  = new Pagado_I18n();
+    }
+
+    /**
+     * Initialize Pagado
+     */
+    public function init()
+    {
+        $this->block_support_init();
+        $this->set_locale();
+        $this->define_admin_hooks();
+        $this->define_public_hooks();
+        $this->define_payment_gateway();
     }
 
     private function set_locale()
@@ -76,6 +77,10 @@ final class Pagado
     {
         add_action('plugin_loaded', array(Pagado_Payment_Gateway_Loader::class, 'load_gateway'));
         add_filter('woocommerce_payment_gateways', array(Pagado_Payment_Gateway_Loader::class, 'add_gateway'));
+    }
+
+    private function block_support_init() {
+
     }
 
     public function get_plugin_name()

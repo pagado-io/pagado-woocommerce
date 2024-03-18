@@ -114,8 +114,6 @@ function pagado_admin_withdraw()
 {
 ?>
     <script>
-        var hooks;
-
         function getPagadoPaymentDetails(details, method, data) {
             if (data[method] !== undefined) {
                 if ('pagado' === method) {
@@ -125,7 +123,18 @@ function pagado_admin_withdraw()
 
             return details;
         }
-        dokan.hooks.addFilter('dokan_get_payment_details', 'getPagadoPaymentDetails', getPagadoPaymentDetails, 33, 3);
+
+        try {
+            dokan.hooks.addFilter(
+                'dokan_get_payment_details',
+                'getPagadoPaymentDetails',
+                getPagadoPaymentDetails,
+                33,
+                3
+            );
+        } catch (err) {
+            // console.log(err);
+        }
     </script>
 <?php
 }

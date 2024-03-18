@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fired during plugin activation
+ * Pagado plugin activation and deactivation class
  *
  * @link            #
  * @since           0.1.0

@@ -64,7 +64,7 @@ function activate_pagado()
 function deactivate_pagado()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-deactivator.php';
-    Pagado_Deactivation::deactivate();
+    Pagado_Activator::deactivate();
 }
 
 function no_woocommerce_notice()

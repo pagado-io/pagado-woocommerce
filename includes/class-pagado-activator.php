@@ -16,4 +16,9 @@ class Pagado_Activator
     {
         // activation code
     }
+
+    public static function deactivate()
+    {
+        // deactivation code
+    }
 }

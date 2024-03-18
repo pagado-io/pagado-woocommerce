@@ -1,7 +1,5 @@
 <?php
 
-use WpOrg\Requests\Response;
-
 /**
  * Pagado payment gateway class
  *
@@ -114,6 +112,11 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 'sslverify' => true, // enable
                 // 'sslcertificates' => PAGADO_ROOT . 'cert.pem',
             ));
+
+            if (is_wp_error($request)) {
+                $err_msg = $request->get_error_message();
+                throw new Exception($err_msg);
+            }
 
             $response = wp_remote_retrieve_body($request);
             $response = json_decode($response);

@@ -135,7 +135,6 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
             }
 
             wc_add_notice(__('Error while processing payment.', 'pagado'), 'error');
-            return;
         }
     }
 }

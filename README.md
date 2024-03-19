@@ -27,6 +27,33 @@ Please check PHP and WordPress versions compatibility [here](https://make.wordpr
 3. Use **Save changes** button to save the configuration.
 ![Pagado details](./doc-img/pagado-login.png)
 
+## # Dokan multi-vendor settings
+Starting from Pagado version 2.0.0, Dokan multi-vendor support has been added. It allows seamless integration with Pagado payment gateway. While is has full support for Dokan, it also supports some additional features like instant automatic payment to vendor.
+
+*Note: Dokan features and documentation can be found [here](https://dokan.co/docs/wordpress).*
+
+### # Get your Pagado API Direct key
+Pagado API Direct allows it's user to use **supported** features through it's API with API Direct key (logging into account is not necessary).
+
+1. Login to pagado.
+2. Select API Direct from menu.
+
+   ![API Direct URL](./doc-img/profile-api-direct-url.png)
+
+3. Generate new key if you haven't already. You can `Generate` new one if you already have one. Use `Delete` if you want to disable API Direct access to your account.
+
+    ![API Direct key generation](./doc-img/api-direct-key-generation.png)
+
+4. You should get that key from here for use. You can always come back and get your existing key from here.
+
+### # Admin setup
+1. Login into WordPress as Admin.
+2. From dashboard menu (on the left) go to `WooCommerce -> Settings`.
+3. Select `Payments` tab.
+4. Click on `Pagado Gateway -> Manage` button.
+
+### # Vendor setup
+
 ## # Trouble shooting
 ### # Pagado payment option is not available
 ![No payment option](./doc-img/no-payment-option.png)

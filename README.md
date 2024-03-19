@@ -16,16 +16,19 @@ Please check PHP and WordPress versions compatibility [here](https://make.wordpr
 1. Go to WooCommerce -> Settings -> General tab
 2. From Currency options -> Currency, select **Millix (MLX)**.
 3. Use **Save changes** button to save the configuration.
-![Select millix as currency](./doc-img/select-currency.png)
+
+    ![Select millix as currency](./doc-img/select-currency.png)
 
 1. From WooCommerce -> Settings -> Payment tab, you should see **Pagado Gateway** is activated by default. If not make sure it's activated.
 2. Click on **Manage** button.
-![Manage pagado](./doc-img/manage-pagado.png)
+
+    ![Manage pagado](./doc-img/manage-pagado.png)
 
 1. Check **Enable Pagado Payment Gateway**.
 2. Insert your pagado email and password into the respective fields.
 3. Use **Save changes** button to save the configuration.
-![Pagado details](./doc-img/pagado-login.png)
+
+    ![Pagado details](./doc-img/pagado-login.png)
 
 ## # Dokan multi-vendor settings
 Starting from Pagado version 2.0.0, Dokan multi-vendor support has been added. It allows seamless integration with Pagado payment gateway. While is has full support for Dokan, it also supports some additional features like instant automatic payment to vendor.
@@ -38,7 +41,7 @@ Pagado API Direct allows it's user to use **supported** features through it's AP
 1. Login to pagado.
 2. Select API Direct from menu.
 
-   ![API Direct URL](./doc-img/profile-api-direct-url.png)
+    ![API Direct URL](./doc-img/profile-api-direct-url.png)
 
 3. Generate new key if you haven't already. You can `Generate` new one if you already have one. Use `Delete` if you want to disable API Direct access to your account.
 
@@ -65,11 +68,13 @@ To get **Pagado Payment method** working, you have to switch to **Classic Editor
 1. Login to your WordPress site as admin.
 2. Edit your checkout page by going to pages -> checkout or simply vising checkout page and click on the **Edit** from the top right on the screen.
 3. When in the edit checkout page click any content from the left side.
-![Checkout blocks](./doc-img/checkout-block.png)
+
+    ![Checkout blocks](./doc-img/checkout-block.png)
 
 1. You'll see a **Pagado Gateway** warning.
 2. Click on the **Switch to classic checkout** button.
-![Block not supported](./doc-img/block-warning.png)
+
+    ![Block not supported](./doc-img/block-warning.png)
 
 1. You should see a warning. Click on **Switch**.
 2. Finally **Update** the page.

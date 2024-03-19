@@ -2,10 +2,11 @@
 Please check PHP and WordPress versions compatibility [here](https://make.wordpress.org/core/handbook/references/php-compatibility-and-wordpress-versions/) before you proceed.
 
 ## # Tested environment
-* PHP 8.2.11
-* WordPress 6.4.2
-* WooCommerce 8.4.0
-* Pagado 1.2.4
+* PHP 8.3.14
+* WordPress 6.4.3
+* WooCommerce 8.6.1
+* Pagado 2.1.2
+* Dokan 3.10.1
 
 ## # Installation
 1. Have WordPress installed and running.

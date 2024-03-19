@@ -13,13 +13,13 @@ Please check PHP and WordPress versions compatibility [here](https://make.wordpr
 3. Install and activate Pagado Payment Processor plugin.
 
 ## # WooCommerce settings
-1. Go to WooCommerce -> Settings -> General tab
-2. From Currency options -> Currency, select **Millix (MLX)**.
+1. Go to `WooCommerce` -> `Settings` -> `General` tab
+2. From `Currency options` -> `Currency`, select **Millix (MLX)**.
 3. Use **Save changes** button to save the configuration.
 
     ![Select millix as currency](./doc-img/select-currency.png)
 
-1. From WooCommerce -> Settings -> Payment tab, you should see **Pagado Gateway** is activated by default. If not make sure it's activated.
+1. From `WooCommerce` -> `Settings` -> `Payment` tab, you should see **Pagado Gateway** is activated by default. If not make sure it's activated.
 2. Click on **Manage** button.
 
     ![Manage pagado](./doc-img/manage-pagado.png)
@@ -51,9 +51,9 @@ Pagado API Direct allows it's user to use **supported** features through it's AP
 
 ### # Admin setup
 1. Login into WordPress as Admin.
-2. From dashboard menu (on the left) go to `WooCommerce -> Settings`.
+2. From dashboard menu (on the left) go to `WooCommerce` -> `Settings`.
 3. Select `Payments` tab.
-4. Click on `Pagado Gateway -> Manage` button.
+4. Click on `Pagado Gateway` -> `Manage` button.
 
     ![Manage pagado](./doc-img/manage-pagado.png)
 
@@ -86,7 +86,7 @@ Starting with WooCommerce version 8.3, WooCommerce Cart and Checkout Blocks are 
 To get **Pagado Payment method** working, you have to switch to **Classic Editor** mode. To do that
 
 1. Login to your WordPress site as admin.
-2. Edit your checkout page by going to pages -> checkout or simply vising checkout page and click on the **Edit** from the top right on the screen.
+2. Edit your checkout page by going to `Pages` -> `Checkout` or simply vising checkout page and click on the **Edit** from the top right on the screen.
 3. When in the edit checkout page click any content from the left side.
 
     ![Checkout blocks](./doc-img/checkout-block.png)

@@ -62,6 +62,20 @@ Pagado API Direct allows it's user to use **supported** features through it's AP
     ![Pagado API Direct key](./doc-img/wp-api-direct-key-setup.png)
 
 ### # Vendor setup
+1. Visit you vendor dashboard from **navigation**.
+2. Go to `Settings` -> `Payment`.
+3. Click on `Add Payment Method` and select `Pagado`.
+
+    ![Vendor payment method](./doc-img/dokan-add-payment-method.png)
+
+4. Add your Pagado E-mail and `Update Settings`.
+
+    ![Pagado vendor setup](./doc-img/dokan-add-pagado-payment-method.png)
+
+5. Now, when a customer purchases your product, you should get your **share** instantly on order **completion**.
+6. In the admin dashboard **admin** can check vendor payments. To do so, visit admin dashboard `Dokan` -> `Withdraw`. You should see withdraws with their details and a **transaction ID** on success, in the **withdraw note**.
+
+    ![Dokan instant withdraw](./doc-img/dokan-pagado-instant-withdraw.png)
 
 ## # Trouble shooting
 ### # Pagado payment option is not available

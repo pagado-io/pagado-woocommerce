@@ -52,7 +52,8 @@ function pagado_init()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
     $pagado = new Pagado();
-    add_action('plugin_loaded', array($pagado, 'init'));
+    add_action('plugin_loaded', array($pagado, 'initialize'));
+    add_action('woocommerce_blocks_loaded', 'register_block_support');
 }
 
 function activate_pagado()
@@ -70,4 +71,16 @@ function deactivate_pagado()
 function no_woocommerce_notice()
 {
     echo '<div class="notice notice-error"><p><strong>WooCommerce is required for Pagado payment gateway. Please install and activate WooCommerce first.</strong></p></div>';
+}
+
+function register_block_support()
+{
+    require_once plugin_dir_path(__FILE__) . 'includes/class-pagado-block-support.php';
+
+    add_action(
+        'woocommerce_blocks_payment_method_type_registration',
+        function ($registry) {
+            $registry->register(new Pagado_Block_Support());
+        }
+    );
 }

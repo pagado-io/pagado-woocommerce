@@ -55,6 +55,12 @@ Pagado API Direct allows it's user to use **supported** features through it's AP
 3. Select `Payments` tab.
 4. Click on `Pagado Gateway -> Manage` button.
 
+    ![Manage pagado](./doc-img/manage-pagado.png)
+
+5. Enter the **API Direct key** that we previously collected from Pagado **API Direct** page (Add email as well if you haven't already) and `save changes`.
+
+    ![Pagado API Direct key](./doc-img/wp-api-direct-key-setup.png)
+
 ### # Vendor setup
 
 ## # Trouble shooting

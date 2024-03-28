@@ -154,13 +154,13 @@ add_filter('dokan_withdraw_method_icon', 'add_pagado_gateway_icon', 10, 2);
 
 /**
  * On order complete create new withdraw request.
- * @param int $order_id Order ID.
+ * @param int $id Order ID.
  * @param string $from Old order status.
  * @param string $to New order status.
  * @param WC_Order $order Order object.
  * @since 2.1.0
  */
-function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
+function dokan_create_new_withdraw_request($id, $from, $to, $order)
 {
     if ($to === "completed") {
         $pagado_id = "pagado";
@@ -170,27 +170,27 @@ function dokan_create_new_withdraw_request($order_id, $from, $to, $order)
             $active_method = dokan_withdraw_get_default_method($vendor_id);
 
             if ($active_method === $pagado_id) {
-                $sub_total = 0;
+                $subtotal = 0;
+
                 $order_details = dokan_get_vendor_order_details($order, $vendor_id);
                 $vendor_details = dokan()->vendor->get($vendor_id);
-                $vendor_details = $vendor_details->to_array();
-                $vendor_email = $vendor_details["payment"][$pagado_id]["email"];
+                $vendor_email = $vendor_details->get_payment_profiles()[$pagado_id]['email'];
 
                 foreach ($order_details as $details) {
-                    $sub_total += $details["total"];
+                    $subtotal += $details["total"];
                 }
 
                 $pagado_gateway = WC()->payment_gateways()->get_available_payment_gateways()[$pagado_id];
                 $pagado_settings = $pagado_gateway->settings;
 
                 if (!$pagado_settings["api_key"]) {
-                    return new WP_Error('invalid_api_key', "Invalid Pagado API Direct key", "pagado");
+                    throw new WP_Error('invalid_api_key', "Invalid Pagado API Direct key", "pagado");
                 }
 
                 $withdraw = new Withdraw();
                 $withdraw
                     ->set_user_id($vendor_id)
-                    ->set_amount($sub_total)
+                    ->set_amount($subtotal)
                     ->set_date(dokan_current_datetime()->format('Y-m-d H:i:s'))
                     ->set_status(dokan()->withdraw->get_status_code('pending'))
                     ->set_method($pagado_id)

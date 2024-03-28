@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var server = 'https://pagado.io';
+    const server = 'https://pagado.io';
 
     $(document).ready(function () {
         $('body').on('updated_checkout', function () {

@@ -90,6 +90,8 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
             return;
         }
 
+        do_action('before_pagado_checkout_init', $order_id, $order);
+
         if ($data->token) {
             $server = 'https://pagado.io'; // change
             $url = $server . '/api/pagado/confirm-checkout';
@@ -126,11 +128,17 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 $response->price == $order->get_subtotal() &&
                 $response->pg_nonce == $nonce
             ) {
+                $transaction_id = $response->id;
+
                 wc_reduce_stock_levels($order);
+
                 $order->update_status('completed', __('Payment complete.', 'pagado'));
-                $order->set_transaction_id($response->id);
-                $order->add_order_note("Transaction ID: " . $response->id, 1);
+                $order->set_transaction_id($transaction_id);
+                $order->add_order_note("Transaction ID: " . $transaction_id, 1);
+
                 WC()->cart->empty_cart();
+
+                do_action('pagado_checkout_complete', $order_id, $order, $transaction_id);
 
                 return array(
                     'result' => 'success',
@@ -138,7 +146,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 );
             }
 
-            wc_add_notice(__('Error while processing payment.', 'pagado'), 'error');
+            throw new Exception("Error while processing payment.");
         }
     }
 }

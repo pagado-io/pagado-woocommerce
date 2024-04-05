@@ -52,7 +52,7 @@ final class Pagado
 
     private function set_locale()
     {
-        add_action('plugins_loaded', array($this->plugin_i18n, 'load_plugin_text_domain'));
+        add_action('init', array($this->plugin_i18n, 'load_plugin_text_domain'));
     }
 
     private function define_admin_hooks()
@@ -73,7 +73,7 @@ final class Pagado
 
     private function define_payment_gateway()
     {
-        add_action('plugin_loaded', array(Pagado_Payment_Gateway_Loader::class, 'load_gateway'));
+        add_action('init', array(Pagado_Payment_Gateway_Loader::class, 'load_gateway'));
         add_filter('woocommerce_payment_gateways', array(Pagado_Payment_Gateway_Loader::class, 'add_gateway'));
     }
 

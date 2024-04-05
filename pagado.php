@@ -52,7 +52,7 @@ function pagado_init()
 {
     require_once plugin_dir_path(__FILE__) . 'includes/class-pagado.php';
     $pagado = new Pagado();
-    add_action('plugin_loaded', array($pagado, 'initialize'));
+    add_action('plugins_loaded', array($pagado, 'initialize'));
     // add_action('woocommerce_blocks_loaded', 'register_block_support');
 }
 

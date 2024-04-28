@@ -23,8 +23,8 @@
         }
 
         $.ajax({
-            method: 'post',
-            url: '/?wc-ajax=get_pagado_data',
+            method: 'POST',
+            url: '?wc-ajax=get_pagado_data'
         }).done(function (res, status, xhr) {
             if (status === 'success') {
                 initializeIframe(res.data);

@@ -112,7 +112,6 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 ),
                 'cookies' => $cookies,
                 'sslverify' => true, // enable
-                // 'sslcertificates' => PAGADO_ROOT . 'cert.pem',
             ));
 
             if (is_wp_error($request)) {
@@ -125,8 +124,8 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
 
             if (
                 $response->success == true &&
-                $response->price == $order->get_subtotal() &&
-                $response->pg_nonce == $nonce
+                $response->content->price == $order->get_subtotal() &&
+                $response->content->pg_nonce == $nonce
             ) {
                 $transaction_id = $response->id;
 
@@ -144,6 +143,8 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                     'result' => 'success',
                     'redirect' => $this->get_return_url($order),
                 );
+            } else {
+                throw new Exception("{$response->message}: {$response->error}.");
             }
 
             throw new Exception("Error while processing payment.");

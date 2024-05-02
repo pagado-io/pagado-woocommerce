@@ -127,7 +127,7 @@ class Pagado_Payment_Gateway extends WC_Payment_Gateway
                 $response->content->price == $order->get_subtotal() &&
                 $response->content->pg_nonce == $nonce
             ) {
-                $transaction_id = $response->id;
+                $transaction_id = $response->content->transaction_id;
 
                 wc_reduce_stock_levels($order);
 

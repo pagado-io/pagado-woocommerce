@@ -11,7 +11,7 @@
  * Plugin Name:             Pagado
  * Plugin URI:              https://pagado.io
  * Description:             Pagado payment processor for WooCommerce.
- * Version:                 2.2.0
+ * Version:                 2.2.1
  * Requires at least:       6.3
  * Requires PHP:            7.4
  * Requires Plugins:        woocommerce
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define constants
-define('PAGADO_VERSION', '2.2.0');
+define('PAGADO_VERSION', '2.2.1');
 define('PAGADO_ROOT', plugin_dir_path(__FILE__));
 define('PAGADO_ROOT_URL', plugin_dir_url(__FILE__));
 

@@ -84,6 +84,7 @@
                         const urlData = {
                             origin: window.origin,
                             redirect: window.location.href,
+                            cart: data.cart,
                             variant: data.variant,
                             to: data.to,
                             price: data.price,
@@ -91,7 +92,7 @@
                             version: data.version,
                         };
 
-                        const urlParams = `currency=${urlData.currency}&price=${urlData.price}&to=${urlData.to}&redirect=${urlData.redirect}&variant=${urlData.variant}&version=${urlData.version}`
+                        const urlParams = `cart=${encodeURIComponent(urlData.cart)}&currency=${urlData.currency}&price=${urlData.price}&to=${urlData.to}&redirect=${urlData.redirect}&variant=${urlData.variant}&version=${urlData.version}`
 
                         const settings = {
                             url: `${server}/checkout?${urlParams}`,

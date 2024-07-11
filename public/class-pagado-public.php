@@ -54,12 +54,29 @@ class Pagado_Public
     {
         try {
             $gateway = WC()->payment_gateways->payment_gateways()[$this->plugin_name];
+            $cart = [];
 
+            foreach (WC()->cart->get_cart() as $item) {
+                $quantity = $item['quantity'];
+                $product = $item['data'];
+                $sku = $product->get_sku();
+                $name = $product->get_name();
+                $price = $product->get_price();
+
+                $cart_item = [];
+                $cart_item['sku'] = $sku;
+                $cart_item['name'] = $name;
+                $cart_item['price'] = $price;
+                $cart_item['quantity'] = $quantity;
+
+                $cart[] = $cart_item;
+            }
+            $data['cart'] = json_encode($cart);
             $data['to'] = $gateway->email;
             $data['price'] = WC()->cart->subtotal;
             $data['currency'] = get_woocommerce_currency();
             $data['version'] = $this->version;
-            $data['variant'] = 'wc';
+            $data['variant'] = 'WC';
 
             wp_send_json_success($data);
         } catch (Exception $e) {
